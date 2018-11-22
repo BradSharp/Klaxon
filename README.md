@@ -1,2 +1,0 @@
-# Klaxon
-Custom QI Klaxon
