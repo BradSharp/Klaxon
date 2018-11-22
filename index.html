@@ -1,1 +1,89 @@
+<html>
+	<head>
+		<title>QI Klaxon</title>
+		<style>
+			body {
+				margin: 0;
+				padding: 24px;
+				background-color: black;
+				color: white;
+				font: 24px arial, san-serif;
+			}
 
+			.center {
+				position: relative;
+				height: 50%;
+			}
+			
+			.center div {
+				position: relative;
+				top: 100%;
+				height: 0;
+				text-align: center;
+				line-height: 0;
+			}
+
+			.show {
+				opacity: 1;
+				transition: opacity 800ms;
+			}
+
+			.hide {
+				opacity: 0;
+				transition: opacity 800ms;
+			}
+
+			#initial {
+				font-size: 64px;
+			}
+
+			#message {
+				font-size: 128px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="center">
+			<audio id="audio" preload="auto" autoplay>
+				<source src="./klaxon.mp3" type="audio/mp3">
+			</audio>
+			<div id="initial">Click to Begin</div>
+			<div id="message" class="hide">Test</div>
+		</div>
+		<script>
+			const parameters = new URLSearchParams(window.location.search);
+			const q = parameters.get('q');
+
+			var initial = document.getElementById("initial");
+			var message = document.getElementById("message");
+			var audio = document.getElementById("audio");
+			var played = false;
+
+			document.body.addEventListener("click", function () {
+				if (played) return;
+				played = true;
+				audio.play();
+			})
+
+			audio.addEventListener("playing", function () {
+				initial.classList.add("hide");
+				message.innerText = q;
+				played = true; //incase we get lucky and are allowed to autoplay :D
+				var n = 9;
+				var intervalId = setInterval(function () {
+					if (n%2 === 0) {
+						message.classList.add('hide');
+						message.classList.remove('show');
+						
+					} else {
+						message.classList.add('show');
+						message.classList.remove('hide');
+					}
+					if (--n === 0) {
+						clearInterval(intervalId);
+					}
+				}, 800)
+			})
+		</script>
+	</body>
+</html>
